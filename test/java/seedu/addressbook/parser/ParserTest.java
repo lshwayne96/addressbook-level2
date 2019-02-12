@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 import static seedu.addressbook.common.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.addressbook.common.Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -38,7 +39,7 @@ public class ParserTest {
 
     @Before
     public void setUp() {
-        parser = new Parser();
+        parser = new Parser(new ArrayList<Person>());
     }
 
     /*

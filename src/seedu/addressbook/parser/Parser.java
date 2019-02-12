@@ -3,26 +3,13 @@ package seedu.addressbook.parser;
 import static seedu.addressbook.common.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.addressbook.common.Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import seedu.addressbook.commands.AddCommand;
-import seedu.addressbook.commands.ClearCommand;
-import seedu.addressbook.commands.Command;
-import seedu.addressbook.commands.DeleteCommand;
-import seedu.addressbook.commands.ExitCommand;
-import seedu.addressbook.commands.FindCommand;
-import seedu.addressbook.commands.HelpCommand;
-import seedu.addressbook.commands.IncorrectCommand;
-import seedu.addressbook.commands.ListCommand;
-import seedu.addressbook.commands.ViewAllCommand;
-import seedu.addressbook.commands.ViewCommand;
+import seedu.addressbook.commands.*;
 import seedu.addressbook.data.exception.IllegalValueException;
+import seedu.addressbook.data.person.ReadOnlyPerson;
 
 /**
  * Parses user input.
@@ -41,6 +28,14 @@ public class Parser {
                     + " (?<isAddressPrivate>p?)a/(?<address>[^/]+)"
                     + "(?<tagArguments>(?: t/[^/]+)*)"); // variable number of tags
 
+    public static final Pattern EDIT_ARGS_FORMAT =
+            Pattern.compile("(?<targetIndex>\\d+)"
+                    + "( (?<name>[^/]+))?"
+                    + "( (?<isPhonePrivate>p?)p/(?<phone>[^/]+))?"
+                    + "( (?<isEmailPrivate>p?)e/(?<email>[^/]+))?"
+                    + "( (?<isAddressPrivate>p?)a/(?<address>[^/]+))?"
+                    + "(?<tagArguments>(?: t/[^/]+)*)"); // variable number of tags
+
 
     /**
      * Signals that the user input could not be parsed.
@@ -55,6 +50,12 @@ public class Parser {
      * Used for initial separation of command word and args.
      */
     public static final Pattern BASIC_COMMAND_FORMAT = Pattern.compile("(?<commandWord>\\S+)(?<arguments>.*)");
+
+    private List<? extends ReadOnlyPerson> lastShownList;
+
+    public Parser(List<? extends ReadOnlyPerson> lastShownList) {
+        this.lastShownList = lastShownList;
+    }
 
     /**
      * Parses user input into command for execution.
@@ -78,6 +79,9 @@ public class Parser {
 
         case DeleteCommand.COMMAND_WORD:
             return prepareDelete(arguments);
+
+        case EditCommand.COMMAND_WORD:
+            return prepareEdit(arguments);
 
         case ClearCommand.COMMAND_WORD:
             return new ClearCommand();
@@ -139,6 +143,7 @@ public class Parser {
      * Returns true if the private prefix is present for a contact detail in the add command's arguments string.
      */
     private static boolean isPrivatePrefixPresent(String matchedPrefix) {
+        if (matchedPrefix == null) return false;
         return matchedPrefix.equals("p");
     }
 
@@ -171,6 +176,44 @@ public class Parser {
             return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
         } catch (NumberFormatException nfe) {
             return new IncorrectCommand(MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+        }
+    }
+
+    private Command prepareEdit(String args) {
+        final Matcher matcher = EDIT_ARGS_FORMAT.matcher(args.trim());
+        // Validate arg string format
+        if (!matcher.matches()) {
+            return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
+        }
+
+        String index = matcher.group("targetIndex");
+        String name = matcher.group("name");
+        String phone = matcher.group("phone");
+        boolean isPhonePrivate = isPrivatePrefixPresent(matcher.group("isPhonePrivate"));
+        String email = matcher.group("email");
+        boolean isEmailPrivate = isPrivatePrefixPresent(matcher.group("isEmailPrivate"));
+        String address = matcher.group("address");
+        boolean isAddressPrivate = isPrivatePrefixPresent(matcher.group("isAddressPrivate"));
+
+        try {
+            final int targetIndex = parseArgsAsDisplayedIndex(index);
+            return new EditCommand(
+                    lastShownList, targetIndex, name,
+
+                    phone, isPhonePrivate,
+
+                    email, isEmailPrivate,
+
+                    address, isAddressPrivate,
+
+                    getTagsFromArgs(matcher.group("tagArguments"))
+            );
+        } catch (ParseException pe) {
+            return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
+        } catch (NumberFormatException nfe) {
+            return new IncorrectCommand(MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+        } catch (IllegalValueException ive) {
+            return new IncorrectCommand(ive.getMessage());
         }
     }
 

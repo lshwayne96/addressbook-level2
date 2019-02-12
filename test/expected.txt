@@ -12,6 +12,8 @@
 || delete: Deletes the person identified by the index number used in the last person listing.
 || Parameters: INDEX
 || Example: delete 1
+|| edit: edits the data of a person identified by the index number used in the last person listing.
+|| Parameters: INDEX [NAME] [PREFIX/DATA]...Example: edit 1 John Doe p/12345678 pe/johnd@gmail.com
 || Clears address book permanently.
 || Example: clear
 || find: Finds all persons whose names contain any of the specified keywords (case-sensitive) and displays them as a list with index numbers.
@@ -233,6 +235,72 @@
 || 
 || 2 persons listed!
 || ===================================================
+|| Enter command: || [Command entered:  edit]
+|| Invalid command format! 
+|| edit: edits the data of a person identified by the index number used in the last person listing.
+|| Parameters: INDEX [NAME] [PREFIX/DATA]...Example: edit 1 John Doe p/12345678 pe/johnd@gmail.com
+|| ===================================================
+|| Enter command: || [Command entered:  edit should have one number]
+|| Invalid command format! 
+|| edit: edits the data of a person identified by the index number used in the last person listing.
+|| Parameters: INDEX [NAME] [PREFIX/DATA]...Example: edit 1 John Doe p/12345678 pe/johnd@gmail.com
+|| ===================================================
+|| Enter command: || [Command entered:  edit -1 p/123]
+|| Invalid command format! 
+|| edit: edits the data of a person identified by the index number used in the last person listing.
+|| Parameters: INDEX [NAME] [PREFIX/DATA]...Example: edit 1 John Doe p/12345678 pe/johnd@gmail.com
+|| ===================================================
+|| Enter command: || [Command entered:  edit 0 p/123]
+|| The person index provided is invalid
+|| ===================================================
+|| Enter command: || [Command entered:  edit 3 p/123]
+|| The person index provided is invalid
+|| ===================================================
+|| Enter command: || [Command entered:  edit 1 pp/222223]
+|| 	1. Adam Brown Phone: 111111 Email: adam@gmail.com Address: 111, alpha street Tags: 
+|| 	2. Betsy Choo Tags: [secretive]
+|| 	3. Charlie Dickson Email: charlie.d@nus.edu.sg Address: 333, gamma street Tags: [school][friends]
+|| 	4. Dickson Ee Phone: 444444 Address: 444, delta street Tags: [friends]
+|| 	5. Esther Potato Phone: 555555 Email: esther@not.a.real.potato Tags: [tubers][starchy]
+|| 
+|| Edited Person: Betsy Choo Phone: (private) 222223 Email: (private) benchoo@nus.edu.sg Address: (private) 222, beta street Tags: [secretive]
+|| ===================================================
+|| Enter command: || [Command entered:  edit 5 Esther Corn]
+|| 	1. Adam Brown Phone: 111111 Email: adam@gmail.com Address: 111, alpha street Tags: 
+|| 	2. Betsy Choo Tags: [secretive]
+|| 	3. Charlie Dickson Email: charlie.d@nus.edu.sg Address: 333, gamma street Tags: [school][friends]
+|| 	4. Dickson Ee Phone: 444444 Address: 444, delta street Tags: [friends]
+|| 	5. Esther Corn Phone: 555555 Email: esther@not.a.real.potato Tags: [tubers][starchy]
+|| 
+|| Edited Person: Esther Corn Phone: 555555 Email: esther@not.a.real.potato Address: (private) 555, epsilon street Tags: [tubers][starchy]
+|| ===================================================
+|| Enter command: || [Command entered:  edit 4 p/444445 pe/dickson4@nus.edu.sg a/445, delta street t/friend]
+|| 	1. Adam Brown Phone: 111111 Email: adam@gmail.com Address: 111, alpha street Tags: 
+|| 	2. Betsy Choo Tags: [secretive]
+|| 	3. Charlie Dickson Email: charlie.d@nus.edu.sg Address: 333, gamma street Tags: [school][friends]
+|| 	4. Dickson Ee Phone: 444445 Address: 445, delta street Tags: [friend]
+|| 	5. Esther Corn Phone: 555555 Email: esther@not.a.real.potato Tags: [tubers][starchy]
+|| 
+|| Edited Person: Dickson Ee Phone: 444445 Email: (private) dickson4@nus.edu.sg Address: 445, delta street Tags: [friend]
+|| ===================================================
+|| Enter command: || [Command entered:  edit 3 a/334, gamma street t/hi]
+|| 	1. Adam Brown Phone: 111111 Email: adam@gmail.com Address: 111, alpha street Tags: 
+|| 	2. Betsy Choo Tags: [secretive]
+|| 	3. Charlie Dickson Email: charlie.d@nus.edu.sg Address: 334, gamma street Tags: [hi]
+|| 	4. Dickson Ee Phone: 444445 Address: 445, delta street Tags: [friend]
+|| 	5. Esther Corn Phone: 555555 Email: esther@not.a.real.potato Tags: [tubers][starchy]
+|| 
+|| Edited Person: Charlie Dickson Phone: (private) 333333 Email: charlie.d@nus.edu.sg Address: 334, gamma street Tags: [hi]
+|| ===================================================
+|| Enter command: || [Command entered:  edit 5 Adam Brown p/111111 e/adam@gmail.com a/111, alpha street]
+|| This person already exists in the address book
+|| ===================================================
+|| Enter command: || [Command entered:  find Charlie Betsy]
+|| 	1. Betsy Choo Tags: [secretive]
+|| 	2. Charlie Dickson Email: charlie.d@nus.edu.sg Address: 334, gamma street Tags: [hi]
+|| 
+|| 2 persons listed!
+|| ===================================================
 || Enter command: || [Command entered:  delete]
 || Invalid command format! 
 || delete: Deletes the person identified by the index number used in the last person listing.
@@ -252,7 +320,7 @@
 || The person index provided is invalid
 || ===================================================
 || Enter command: || [Command entered:  delete 2]
-|| Deleted Person: Charlie Dickson Phone: (private) 333333 Email: charlie.d@nus.edu.sg Address: 333, gamma street Tags: [school][friends]
+|| Deleted Person: Charlie Dickson Phone: (private) 333333 Email: charlie.d@nus.edu.sg Address: 334, gamma street Tags: [hi]
 || ===================================================
 || Enter command: || [Command entered:  delete 2]
 || Person could not be found in address book
@@ -266,18 +334,18 @@
 || Enter command: || [Command entered:  list]
 || 	1. Adam Brown Phone: 111111 Email: adam@gmail.com Address: 111, alpha street Tags: 
 || 	2. Betsy Choo Tags: [secretive]
-|| 	3. Dickson Ee Phone: 444444 Address: 444, delta street Tags: [friends]
-|| 	4. Esther Potato Phone: 555555 Email: esther@not.a.real.potato Tags: [tubers][starchy]
+|| 	3. Dickson Ee Phone: 444445 Address: 445, delta street Tags: [friend]
+|| 	4. Esther Corn Phone: 555555 Email: esther@not.a.real.potato Tags: [tubers][starchy]
 || 
 || 4 persons listed!
 || ===================================================
 || Enter command: || [Command entered:  delete 4]
-|| Deleted Person: Esther Potato Phone: 555555 Email: esther@not.a.real.potato Address: (private) 555, epsilon street Tags: [tubers][starchy]
+|| Deleted Person: Esther Corn Phone: 555555 Email: esther@not.a.real.potato Address: (private) 555, epsilon street Tags: [tubers][starchy]
 || ===================================================
 || Enter command: || [Command entered:  list]
 || 	1. Adam Brown Phone: 111111 Email: adam@gmail.com Address: 111, alpha street Tags: 
 || 	2. Betsy Choo Tags: [secretive]
-|| 	3. Dickson Ee Phone: 444444 Address: 444, delta street Tags: [friends]
+|| 	3. Dickson Ee Phone: 444445 Address: 445, delta street Tags: [friend]
 || 
 || 3 persons listed!
 || ===================================================
@@ -286,7 +354,7 @@
 || ===================================================
 || Enter command: || [Command entered:  list]
 || 	1. Betsy Choo Tags: [secretive]
-|| 	2. Dickson Ee Phone: 444444 Address: 444, delta street Tags: [friends]
+|| 	2. Dickson Ee Phone: 444445 Address: 445, delta street Tags: [friend]
 || 
 || 2 persons listed!
 || ===================================================

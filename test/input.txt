@@ -107,6 +107,36 @@
   find Charlie Betsy
 
 ##########################################################
+# test edit person command
+##########################################################
+
+# last active view: [1] betsy [2] charlie
+
+  # should catch invalid args format
+  edit
+  edit should have one number
+
+  # should catch invalid index
+  edit -1 p/123
+  edit 0 p/123
+  edit 3 p/123
+
+  # should have edited based on last active view's index
+  edit 1 pp/222223
+
+# last active view: [1] adam [2] betsy [3] charlie [4] dickson [5] esther
+
+  # edits persons correctly
+  edit 5 Esther Corn
+  edit 4 p/444445 pe/dickson4@nus.edu.sg a/445, delta street t/friend
+  edit 3 a/334, gamma street t/hi
+
+  # should not allow edits resulting in duplicates
+  edit 5 Adam Brown p/111111 e/adam@gmail.com a/111, alpha street
+
+  find Charlie Betsy
+
+##########################################################
 # test delete person command
 ##########################################################
 

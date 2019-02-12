@@ -54,6 +54,11 @@ public class AddressBook {
         allPersons.remove(toRemove);
     }
 
+    public void editPerson(ReadOnlyPerson toEdit, Person editedPerson)
+            throws PersonNotFoundException, DuplicatePersonException {
+        allPersons.edit(toEdit, editedPerson);
+    }
+
     /**
      * Clears all persons and tags from the address book.
      */

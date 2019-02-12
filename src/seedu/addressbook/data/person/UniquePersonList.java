@@ -122,6 +122,20 @@ public class UniquePersonList implements Iterable<Person> {
         }
     }
 
+    public void edit(ReadOnlyPerson toEdit, Person editedPerson)
+            throws PersonNotFoundException, DuplicatePersonException {
+        int index = internalList.indexOf(toEdit);
+        if (index == -1) {
+            throw new PersonNotFoundException();
+        }
+        internalList.remove(toEdit);
+        if (contains(editedPerson)) {
+            internalList.add(index, (Person)toEdit);
+            throw new DuplicatePersonException();
+        }
+        internalList.add(index, editedPerson);
+    }
+
     /**
      * Clears all persons in list.
      */
